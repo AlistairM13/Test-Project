@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerComponent : MonoBehaviour
 {
     public Rigidbody2D rigidbody2D;
 
-    public GameObject gameWonPanel;
+    public GameObject gameWonPanel, gameLostPanel;
 
     public float speed;
 
-    private bool isGameWon = false;
+    private bool isGameOver = false;
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class PlayerComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (isGameWon == true){
+        if (isGameOver == true){
             return;
         }
         if (Input.GetAxis("Horizontal") > 0) //Positive- d or right
@@ -53,7 +54,19 @@ public class PlayerComponent : MonoBehaviour
         if (other.tag == "Door"){
             gameWonPanel.SetActive(true);
             Debug.Log("Level complete!!");
-            isGameWon = true;
+            isGameOver = true;
+        }
+
+        if (other.tag == "Enemy"){
+            gameLostPanel.SetActive(true);
+            Debug.Log("Level Lost!!");
+            isGameOver = true;
         }
     }
+
+    public void RestartGame(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Button clicked!!!");
+    }
+
 }
