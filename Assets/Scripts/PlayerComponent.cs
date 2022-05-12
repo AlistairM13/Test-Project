@@ -5,8 +5,12 @@ using UnityEngine;
 public class PlayerComponent : MonoBehaviour
 {
     public Rigidbody2D rigidbody2D;
+
+    public GameObject gameWonPanel;
+
     public float speed;
 
+    private bool isGameWon = false;
 
     void Start()
     {
@@ -15,7 +19,10 @@ public class PlayerComponent : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        if (isGameWon == true){
+            return;
+        }
         if (Input.GetAxis("Horizontal") > 0) //Positive- d or right
         {
             rigidbody2D.velocity = new Vector2(speed, 0f);
@@ -44,7 +51,9 @@ public class PlayerComponent : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {   
         if (other.tag == "Door"){
+            gameWonPanel.SetActive(true);
             Debug.Log("Level complete!!");
+            isGameWon = true;
         }
     }
 }
